@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
-using System.Linq;
 using Saxx.LingoHubClient.Exceptions;
 
 namespace Saxx.LingoHubClient.Tests
@@ -16,6 +16,7 @@ namespace Saxx.LingoHubClient.Tests
             Assert.IsTrue(projects.Any(x => x.Title == Configuration.ProjectTitle));
         }
 
+
         [Test]
         public async Task Load_Project_Details()
         {
@@ -25,8 +26,9 @@ namespace Saxx.LingoHubClient.Tests
             Assert.IsTrue(projectDetails.ProjectLocales.Contains("en"));
         }
 
+
         [Test]
-        [ExpectedException(typeof(ProjectDoesNotExistException))]
+        [ExpectedException(typeof (ProjectDoesNotExistException))]
         public async Task Invalid_Project_Throws_Exception()
         {
             await Client.GetProjectDetails("Some_Random_Name");

@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Saxx.LingoHubClient.Exceptions;
-using Saxx.LingoHubClient.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Saxx.LingoHubClient.Exceptions;
+using Saxx.LingoHubClient.Models;
 
 namespace Saxx.LingoHubClient
 {
@@ -27,7 +27,7 @@ namespace Saxx.LingoHubClient
         {
             var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync(translation.Href + ".json"));
             return from x in json.Value<JArray>("phrases")
-                   select x.ToObject<Phrase>();
+                select x.ToObject<Phrase>();
         }
     }
 }

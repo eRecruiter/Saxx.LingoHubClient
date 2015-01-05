@@ -10,11 +10,13 @@ namespace Saxx.LingoHubClient.Tests
             Client = new LingoHubClient(Configuration.Username, Configuration.Password);
         }
 
+
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {
             Client.Dispose();
         }
+
 
         public LingoHubClient Client { get; set; }
     }

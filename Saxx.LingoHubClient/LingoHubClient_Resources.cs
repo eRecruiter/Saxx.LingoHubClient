@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Saxx.LingoHubClient.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Saxx.LingoHubClient.Models;
 
 namespace Saxx.LingoHubClient
 {
@@ -22,7 +22,7 @@ namespace Saxx.LingoHubClient
         {
             var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync(project.HrefResources + ".json"));
             return from x in json.Value<JArray>("members")
-                   select x.ToObject<Resource>();
+                select x.ToObject<Resource>();
         }
 
 
