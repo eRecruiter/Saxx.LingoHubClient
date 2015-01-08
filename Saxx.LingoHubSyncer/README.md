@@ -7,9 +7,9 @@ You can download [the latest version](https://ci.appveyor.com/project/saxx/saxx-
 
 See `Saxx.LingoHubSyncer --help` for command line options. A typical call usually looks something like:
 
-`Saxx.LingoHubSyncer.exe -u <LingoHub_Username> -p <LingoHub_Password> -m Upload --project <LingoHub_Project> --path <Path_to_Applicant> --locale de --defaultLocale en`
+`Saxx.LingoHubSyncer.exe -u <LingoHub_Username> -p <LingoHub_Password> -m Upload --project <LingoHub_Project> --path <Path_to_Applicationor_Resx_File> --locale de --defaultLocale en`
 
 and
 
-`Saxx.LingoHubSyncer.exe -u <LingoHub_Username> -p <LingoHub_Password> -m Download --project <LingoHub_Project> --path <Path_to_Applicant> --locale de --defaultLocale en`
+`Saxx.LingoHubSyncer.exe -u <LingoHub_Username> -p <LingoHub_Password> -m Download --project <LingoHub_Project> --path <Path_to_Application_or_Resx_File> --locale de --defaultLocale en`
 
