@@ -22,7 +22,7 @@ namespace Saxx.LingoHubClient
         {
             var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync(project.HrefResources + ".json"));
             return from x in json.Value<JArray>("members")
-                select x.ToObject<Resource>();
+                   select x.ToObject<Resource>();
         }
 
 
@@ -32,16 +32,19 @@ namespace Saxx.LingoHubClient
         }
 
 
-        public async Task UploadResource(string projectTitle, string filePath, string forceLocale = null)
+        public async Task UploadResource(string projectTitle, string filePath, string niceFileName = null, string forceLocale = null)
         {
-            await UploadResource(await GetProjectDetails(projectTitle), filePath, forceLocale);
+            await UploadResource(await GetProjectDetails(projectTitle), filePath, niceFileName, forceLocale);
         }
 
 
-        public async Task UploadResource(ProjectDetails project, string filePath, string forceLocale = null)
+        public async Task UploadResource(ProjectDetails project, string filePath, string niceFileName = null, string forceLocale = null)
         {
             if (!File.Exists(filePath))
                 throw new FileNotFoundException("File not found.", filePath);
+
+            if (string.IsNullOrEmpty(niceFileName))
+                niceFileName = Path.GetFileName(filePath);
 
             var fileContent = new ByteArrayContent(File.ReadAllBytes(filePath));
             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/xml");
@@ -49,7 +52,7 @@ namespace Saxx.LingoHubClient
             var postContent = new MultipartFormDataContent
             {
                 {
-                    fileContent, "file", Path.GetFileName(filePath)
+                    fileContent, "file", niceFileName
                 }
             };
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Saxx.LingoHubSyncer.Resx;
 
 namespace Saxx.LingoHubSyncer
 {
@@ -7,14 +8,14 @@ namespace Saxx.LingoHubSyncer
     {
         #region Constructor
 
-        private LingoHubClient.LingoHubClient _client;
-        private TempResourceService _resxService;
+        private readonly LingoHubClient.LingoHubClient _client;
+        private readonly CombineResxService _resxService;
 
 
         public UploadService()
         {
             _client = new LingoHubClient.LingoHubClient(Program.Configuration.Username, Program.Configuration.Password);
-            _resxService = new TempResourceService();
+            _resxService = new CombineResxService();
         }
 
 
@@ -25,13 +26,17 @@ namespace Saxx.LingoHubSyncer
 
         #endregion
 
-
         public void Run()
         {
             var path = Program.Configuration.Path;
 
-            var tempResxPath = _resxService.MakeSingleResource(path);
-            _client.UploadResource(Program.Configuration.Project, tempResxPath).Wait();
+            var tempResxPath = _resxService.CombineDirectoryToSingleResourceFile(path);
+
+            // always use the same (generic) name, so that LingoHub correctly identifies changed/deleted translations
+            var niceFileName = "resources." + Program.Configuration.Locale + ".resx";
+
+            // ReSharper disable once RedundantArgumentName
+            _client.UploadResource(Program.Configuration.Project, tempResxPath, niceFileName: niceFileName).Wait();
             File.Delete(tempResxPath);
         }
     }

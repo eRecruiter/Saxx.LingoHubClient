@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 
-namespace Saxx.LingoHubSyncer
+namespace Saxx.LingoHubSyncer.Resx
 {
-    public class TempResourceService
+    public class CombineResxService
     {
         #region Constructor
 
-        private readonly ResxFileNameUtilities _resxService;
+        private readonly ResxUtility _resxService;
 
 
-        public TempResourceService()
+        public CombineResxService()
         {
-            _resxService = new ResxFileNameUtilities();
+            _resxService = new ResxUtility();
         }
 
         #endregion
 
-        public string MakeSingleResource(string path)
+        public string CombineDirectoryToSingleResourceFile(string path)
         {
-            var resources = new Dictionary<string, string>();
+            var resources = new Dictionary<string, Phrase>();
 
             if (Directory.Exists(path))
             {
@@ -36,7 +36,7 @@ namespace Saxx.LingoHubSyncer
         }
 
 
-        private void AddResourcesFromDirectoryRecursive(string directoryPath, string basePath, IDictionary<string, string> resources)
+        private void AddResourcesFromDirectoryRecursive(string directoryPath, string basePath, IDictionary<string, Phrase> resources)
         {
             foreach (var filePath in Directory.GetFiles(directoryPath, "*.resx"))
             {
@@ -53,7 +53,7 @@ namespace Saxx.LingoHubSyncer
         }
 
 
-        private void AddResourcesFromFile(string filePath, string basePath, IDictionary<string, string> resources)
+        private void AddResourcesFromFile(string filePath, string basePath, IDictionary<string, Phrase> resources)
         {
             var xml = XDocument.Load(filePath);
             if (xml.Root == null)
@@ -62,27 +62,30 @@ namespace Saxx.LingoHubSyncer
             foreach (var element in xml.Root.Elements("data"))
             {
                 var key = _resxService.EncodePathInResourceKey(filePath, basePath, element.Attribute("name").Value);
-                var value = element.Element("value");
-                if (value == null)
+
+                var phrase = new Phrase(element);
+                if (phrase.Value == null)
                     continue;
-                resources[key] = value.Value;
+
+                resources[key] = phrase;
             }
         }
 
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        private string WriteToTemporaryResxFile(IDictionary<string, string> resources)
+        private string WriteToTemporaryResxFile(IDictionary<string, Phrase> resources)
         {
-            var xml = XDocument.Load(Path.Combine(GetWorkingDirectory(), "Empty_Resource_File.resx"));
+            var xml = XDocument.Load(Path.Combine(Program.GetWorkingDirectory(), "Empty_Resource_File.resx"));
             if (xml.Root == null)
                 throw new Exception("Invalid empty resource file.");
 
-            foreach (var resource in resources)
+            foreach (var keyValuePair in resources)
             {
                 xml.Root.Add(new XElement("data",
-                    new XAttribute("name", resource.Key),
+                    new XAttribute("name", keyValuePair.Key),
                     new XAttribute(XNamespace.Xml + "space", "preserve"),
-                    new XElement("value", resource.Value)));
+                    new XElement("value", keyValuePair.Value.Value),
+                    string.IsNullOrEmpty(keyValuePair.Value.Comment) ? null : new XElement("comment", keyValuePair.Value.Comment)));
             }
 
             var tempPath = Path.GetTempFileName().Replace(".tmp", "." + Program.Configuration.Locale + ".resx");
@@ -92,13 +95,6 @@ namespace Saxx.LingoHubSyncer
         }
 
 
-        private string GetWorkingDirectory()
-        {
-            // we need this fancy way to make it work in NUnit, because the DLL is executed from some temp path
-            var codeBase = GetType().Assembly.EscapedCodeBase;
-            var uri = new UriBuilder(codeBase);
-            var path = Uri.UnescapeDataString(uri.Path);
-            return Path.GetDirectoryName(path);
-        }
+
     }
 }

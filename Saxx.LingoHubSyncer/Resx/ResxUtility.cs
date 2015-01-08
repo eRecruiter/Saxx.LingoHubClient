@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace Saxx.LingoHubSyncer
+namespace Saxx.LingoHubSyncer.Resx
 {
-    public class ResxFileNameUtilities
+    public class ResxUtility
     {
         public string EncodePathInResourceKey(string filePath, string basePath, string resourceKey)
         {
@@ -32,6 +32,30 @@ namespace Saxx.LingoHubSyncer
         }
 
 
+        public void DecodePathInResoureKey(string basePath, string locale, string encodedResourceKey, out string path, out string resourceKey)
+        {
+            resourceKey = encodedResourceKey.Substring(encodedResourceKey.LastIndexOf('/') + 1);
+            path = encodedResourceKey.Substring(0, encodedResourceKey.LastIndexOf('/'));
+
+            if (Program.Configuration.DefaultLocale.Equals(locale, StringComparison.InvariantCultureIgnoreCase))
+                path += ".resx";
+            else
+                path += "." + locale + ".resx";
+            path = Path.Combine(basePath, path);
+        }
+
+
+        public string DecodePathInResoureKey(string basePath, string locale, string encodedResourceKey)
+        {
+            string path;
+            string resourceKey;
+
+            DecodePathInResoureKey(basePath, locale, encodedResourceKey, out path, out resourceKey);
+
+            return path;
+        }
+
+
         public string GetLocale(string fileName)
         {
             fileName = Path.GetFileNameWithoutExtension(fileName);
@@ -41,7 +65,7 @@ namespace Saxx.LingoHubSyncer
             {
                 if (locale.Length == 2)
                     return locale;
-                if (locale.Length == 5 && locale[3] == '-')
+                if (locale.Length == 5 && locale[2] == '-')
                     return locale;
             }
 

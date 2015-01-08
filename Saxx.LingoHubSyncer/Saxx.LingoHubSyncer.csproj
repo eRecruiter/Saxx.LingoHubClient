@@ -52,10 +52,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="ResxFileNameUtilities.cs" />
+    <Compile Include="Resx\ExpandResxService.cs" />
+    <Compile Include="Phrase.cs" />
+    <Compile Include="Resx\ResxUtility.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TempResourceService.cs" />
+    <Compile Include="Resx\CombineResxService.cs" />
+    <Compile Include="DownloadService.cs" />
     <Compile Include="UploadService.cs" />
   </ItemGroup>
   <ItemGroup>

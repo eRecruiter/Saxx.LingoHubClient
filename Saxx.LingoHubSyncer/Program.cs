@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using CommandLine;
 
 namespace Saxx.LingoHubSyncer
 {
@@ -10,22 +12,24 @@ namespace Saxx.LingoHubSyncer
         private static void Main(string[] args)
         {
             Configuration = new Configuration();
-            if (CommandLine.Parser.Default.ParseArguments(args, Configuration))
+            if (Parser.Default.ParseArguments(args, Configuration))
             {
                 try
                 {
                     switch (Configuration.Mode)
                     {
                         case Configuration.Modes.Upload:
-                            {
-                                using (var uploader = new UploadService())
-                                    uploader.Run();
-                                break;
-                            }
+                        {
+                            using (var uploader = new UploadService())
+                                uploader.Run();
+                            break;
+                        }
                         case Configuration.Modes.Download:
-                            {
-                                break;
-                            }
+                        {
+                            using (var downloader = new DownloadService())
+                                downloader.Run();
+                            break;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -35,6 +39,16 @@ namespace Saxx.LingoHubSyncer
                     throw;
                 }
             }
+        }
+
+
+        internal static string GetWorkingDirectory()
+        {
+            // we need this fancy way to make it work in NUnit, because the DLL is executed from some temp path
+            var codeBase = typeof(Program).Assembly.EscapedCodeBase;
+            var uri = new UriBuilder(codeBase);
+            var path = Uri.UnescapeDataString(uri.Path);
+            return Path.GetDirectoryName(path);
         }
     }
 }
