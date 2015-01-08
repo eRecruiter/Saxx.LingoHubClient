@@ -1,0 +1,13 @@
+version: 1.0.0.{build}
+
+configuration: Release
+
+build:
+  project: Saxx.LingoHubClient.sln
+
+before_build:
+  - nuget restore
+  
+artifacts:
+  - path: Saxx.LingoHubSyncer\bin\Release
+    name: Saxx.LingoHubSyncer
