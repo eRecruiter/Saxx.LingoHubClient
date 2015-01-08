@@ -12,7 +12,7 @@ namespace Saxx.LingoHubClient.Tests
         public async Task Upload_Resx()
         {
             var resourcePath = Path.Combine(GetWorkingDirectory(), "Resources", "Some_Resources.de.resx");
-            await Client.UploadResource(Configuration.ProjectTitle, resourcePath, niceFileName: "resources.de.resx");
+            await Client.UploadResource(Configuration.ProjectTitle, resourcePath, niceFileName: "Some_Resources.de.resx");
         }
 
 
@@ -20,7 +20,7 @@ namespace Saxx.LingoHubClient.Tests
         public async Task Upload_Resx_And_Force_Locale()
         {
             var resourcePath = Path.Combine(GetWorkingDirectory(), "Resources", "Some_Resources.resx");
-            await Client.UploadResource(Configuration.ProjectTitle, resourcePath, niceFileName: "resources.resx", forceLocale: "en");
+            await Client.UploadResource(Configuration.ProjectTitle, resourcePath, niceFileName: "Some_Resources.en.resx", forceLocale: "en");
         }
 
 
@@ -42,7 +42,7 @@ namespace Saxx.LingoHubClient.Tests
         {
             var resources = (await Client.GetResources(Configuration.ProjectTitle)).ToList();
 
-            Assert.AreEqual(3, resources.Count());
+            Assert.GreaterOrEqual(resources.Count(), 3);
             Assert.IsTrue(resources.Any(x => x.Name == "Some_Resources.en.resx"));
             Assert.IsTrue(resources.Any(x => x.Name == "Some_Resources.de.resx"));
             Assert.IsTrue(resources.Any(x => x.Name == "Some_Resources.es.resx"));
