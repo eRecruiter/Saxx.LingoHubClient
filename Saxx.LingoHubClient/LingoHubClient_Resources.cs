@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -20,7 +21,7 @@ namespace Saxx.LingoHubClient
 
         public async Task<IEnumerable<Resource>> GetResources(ProjectDetails project)
         {
-            var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync(project.HrefResources + ".json"));
+            var json = JsonConvert.DeserializeObject<JObject>(await FetchAsString(project.HrefResources + ".json"));
             return from x in json.Value<JArray>("members")
                    select x.ToObject<Resource>();
         }
@@ -28,7 +29,7 @@ namespace Saxx.LingoHubClient
 
         public async Task<byte[]> DownloadResource(Resource resource)
         {
-            return await GetByteArrayAsync(resource.Href);
+            return await FetchAsByteArray(resource.Href.ToString());
         }
 
 
@@ -61,6 +62,12 @@ namespace Saxx.LingoHubClient
                 url += "?iso2_code=" + forceLocale;
 
             var postResult = await PostAsync(url, postContent);
+            if (!postResult.IsSuccessStatusCode)
+            {
+                var error = postResult.Content.ReadAsStringAsync();
+                throw new Exception(string.Format("An error occured during request (HTTP {0}):\n{1}\n------", postResult.StatusCode, error));
+            }
+
             postResult.EnsureSuccessStatusCode();
         }
     }
