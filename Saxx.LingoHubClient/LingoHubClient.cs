@@ -15,41 +15,61 @@ namespace Saxx.LingoHubClient
             DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encodedCredentials);
         }
 
-        /// <summary>
-        /// Fetch the data from the LingoHub API.
-        /// </summary>
-        /// <param name="url">URL</param>
-        /// <returns>HTTP Response</returns>
-        private async Task<HttpResponseMessage> Fetch(string url)
+        #region Request Methods
+
+        public new async Task<HttpResponseMessage> PostAsync(string requestUri, HttpContent content)
         {
-            var response = await GetAsync(url);
-            if (response.IsSuccessStatusCode)
-            {
-                return response;
-            }
+            return await AnalyzeLingoHubResponse(await base.PostAsync(requestUri, content));
+        }
+
+        public new async Task<HttpResponseMessage> PostAsync(Uri requestUri, HttpContent content)
+        {
+            return await AnalyzeLingoHubResponse(await base.PostAsync(requestUri, content));
+        }
+
+        public new async Task<HttpResponseMessage> GetAsync(Uri requestUri)
+        {
+            return await AnalyzeLingoHubResponse(await base.GetAsync(requestUri));
+        }
+
+        public new async Task<string> GetStringAsync(string requestUri)
+        {
+            var response = await AnalyzeLingoHubResponse(await base.GetAsync(requestUri));
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public new async Task<string> GetStringAsync(Uri requestUri)
+        {
+            var response = await AnalyzeLingoHubResponse(await base.GetAsync(requestUri));
+            return await response.Content.ReadAsStringAsync();
+        }
+
+
+        public new async Task<byte[]> GetByteArrayAsync(string requestUri)
+        {
+            var response = await AnalyzeLingoHubResponse(await base.GetAsync(requestUri));
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+
+        public new async Task<byte[]> GetByteArrayAsync(Uri requestUri)
+        {
+            var response = await AnalyzeLingoHubResponse(await base.GetAsync(requestUri));
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Analyze the response from LingoHub to extract error messages.
+        /// </summary>
+        /// <param name="response">HTTP Response</param>
+        /// <returns>HTTP Response</returns>
+        private static async Task<HttpResponseMessage> AnalyzeLingoHubResponse(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode) return response;
 
             var error = await response.Content.ReadAsStringAsync();
             throw new Exception(string.Format("An error occured during request (HTTP {0}):\n{1}\n------", response.StatusCode, error));
-        }
-
-        /// <summary>
-        /// Fetch the data from the LingoHub API as string.
-        /// </summary>
-        /// <param name="url">URL</param>
-        /// <returns>Data as String</returns>
-        private async Task<string> FetchAsString(string url)
-        {
-            return await Fetch(url).Result.Content.ReadAsStringAsync();
-        }
-
-        /// <summary>
-        /// Fetch the data from the LingoHub API as byte array.
-        /// </summary>
-        /// <param name="url">URL</param>
-        /// <returns>Data as String</returns>
-        private async Task<byte[]> FetchAsByteArray(string url)
-        {
-            return await Fetch(url).Result.Content.ReadAsByteArrayAsync();
         }
     }
 }
