@@ -34,13 +34,5 @@ namespace Saxx.LingoHubClient.Models
                 return new Uri(Links.First(x => x.Rel == "resources").Href);
             }
         }
-
-        public Uri HrefTranslations
-        {
-            get
-            {
-                return new Uri(Links.First(x => x.Rel == "translations").Href);
-            }
-        }
     }
 }
