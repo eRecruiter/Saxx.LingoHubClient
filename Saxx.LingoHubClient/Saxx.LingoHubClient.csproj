@@ -48,7 +48,6 @@
     <Compile Include="Exceptions\TranslationDoesNotExistException.cs" />
     <Compile Include="Exceptions\ProjectDoesNotExistException.cs" />
     <Compile Include="LingoHubClient_Phrases.cs" />
-    <Compile Include="LingoHubClient_Translations.cs" />
     <Compile Include="LingoHubClient_Resources.cs" />
     <Compile Include="LingoHubClient_Projects.cs" />
     <Compile Include="LingoHubClient.cs" />

@@ -58,9 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="TranslationTests.cs" />
     <Compile Include="ProjectTests.cs" />
-    <Compile Include="PhraseTests.cs" />
     <Compile Include="ResourceTests.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>
