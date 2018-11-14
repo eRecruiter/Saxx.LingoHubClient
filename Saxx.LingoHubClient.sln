@@ -1,13 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saxx.LingoHubSyncer", "Saxx.LingoHubSyncer\Saxx.LingoHubSyncer.csproj", "{8C99DBDB-DA43-4E54-8635-9AA67CF3F869}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saxx.LingoHubClient", "Saxx.LingoHubClient\Saxx.LingoHubClient.csproj", "{DC40F048-CEA8-4283-842B-3323A67E65DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saxx.LingoHubClient.Tests", "Saxx.LingoHubClient.Tests\Saxx.LingoHubClient.Tests.csproj", "{ABF84195-6D73-48E5-BA93-E9AF0BB9D142}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4C909387-01FA-4244-97FC-92A9CEE7A051}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +37,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B2D547C-0D93-4855-80E6-2B71A5EFF010}
 	EndGlobalSection
 EndGlobal

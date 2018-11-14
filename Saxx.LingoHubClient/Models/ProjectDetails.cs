@@ -18,13 +18,7 @@ namespace Saxx.LingoHubClient.Models
 
         [JsonProperty("project_locales")]
         public IEnumerable<string> ProjectLocales { get; set; }
-
-        [JsonProperty("created_at")]
-        public DateTime DateOfCreation { get; set; }
-
-        [JsonProperty("updated_at")]
-        public DateTime DateOfUpdate { get; set; }
-
+    
         public IEnumerable<Link> Links { get; set; }
 
         public Uri HrefResources
