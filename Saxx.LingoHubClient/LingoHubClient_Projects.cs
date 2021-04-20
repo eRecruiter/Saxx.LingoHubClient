@@ -13,7 +13,7 @@ namespace Saxx.LingoHubClient
     {
         public async Task<IEnumerable<Project>> GetProjects()
         {
-            var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync("projects.json"));
+            var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync("projects"));
             return from x in json.Value<JArray>("members")
                 select x.ToObject<Project>();
         }
@@ -42,7 +42,7 @@ namespace Saxx.LingoHubClient
 
         public async Task<ProjectDetails> GetProjectDetails(Project project)
         {
-            return JsonConvert.DeserializeObject<ProjectDetails>(await GetStringAsync(project.Href + ".json"));
+            return JsonConvert.DeserializeObject<ProjectDetails>(await GetStringAsync(project.Href));
         }
     }
 }

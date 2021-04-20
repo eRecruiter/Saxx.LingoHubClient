@@ -13,7 +13,7 @@ namespace Saxx.LingoHubClient
     {
         public async Task<IEnumerable<Phrase>> GetPhrases(Translation translation)
         {
-            var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync(translation.Href + ".json"));
+            var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync(translation.Href));
             return from x in json.Value<JArray>("phrases")
                 select x.ToObject<Phrase>();
         }

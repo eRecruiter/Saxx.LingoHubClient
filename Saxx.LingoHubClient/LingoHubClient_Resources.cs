@@ -20,7 +20,7 @@ namespace Saxx.LingoHubClient
 
         public async Task<IEnumerable<Resource>> GetResources(ProjectDetails project)
         {
-            var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync(project.HrefResources + ".json"));
+            var json = JsonConvert.DeserializeObject<JObject>(await GetStringAsync(project.HrefResources));
             return from x in json.Value<JArray>("members")
                    select x.ToObject<Resource>();
         }
