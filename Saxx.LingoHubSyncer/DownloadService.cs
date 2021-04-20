@@ -36,7 +36,7 @@ namespace Saxx.LingoHubSyncer
                 Directory.CreateDirectory(directoryPath);
 
             var resources = _client.GetResources(Program.Configuration.Project).Result;
-            var resource = resources.FirstOrDefault(x => x.Locale == Program.Configuration.Locale);
+            var resource = resources.FirstOrDefault(x => x.Locale == Program.Configuration.Locale && x.Href.AbsoluteUri.Contains("resources/resources"));
             if (resource == null)
                 throw new Exception("There is no resource file for locale '" + Program.Configuration.Locale + "'.");
 
